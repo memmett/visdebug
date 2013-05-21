@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-#ifdef DZMQ
 #include <zmq.h>
 
 typedef struct {
@@ -19,8 +17,6 @@ void dzmq_free(void *data, void *hint)
   free(data);
 }
 
-
-int dzmq_active() { return 1; }
 
 void *dzmq_connect()
 {
@@ -96,13 +92,3 @@ void dzmq_send(void *ptr, double *q, int n)
 
   /* zmq_sendmsg(ctx->socket, &msg, 0); */
 }
-
-#else  /* stubs */
-
-int dzmq_active() { return 0; }
-void *dzmq_connect() { return NULL; }
-void dzmq_close(void *ptr) { }
-void dzmq_send_size(void *ptr, int nx, int ny) { }
-void dzmq_send(void *ptr, double *q, int n) { }
-
-#endif

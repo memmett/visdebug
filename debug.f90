@@ -13,12 +13,6 @@ module debug_module
   end interface
 
   interface
-     integer(c_int) function dzmq_active() bind(c, name='dzmq_active')
-       use iso_c_binding
-     end function dzmq_active
-  end interface
-
-  interface
      subroutine dzmq_send(ptr, q, nx) bind(c, name='dzmq_send')
        use iso_c_binding
        type(c_ptr), intent(in), value :: ptr
@@ -51,11 +45,6 @@ contains
 
     integer :: volume, lo(2), hi(2)
     double precision, pointer, dimension(:,:,:,:) :: qp
-
-    integer(c_int) :: active
-
-    active = dzmq_active()
-    if (active == 0) return
 
     if (get_dim(q) /= 2) then
        stop "ERROR: dsend: Only 2d multifabs are supported."
