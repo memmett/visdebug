@@ -1,39 +1,34 @@
 module debug_module
   use multifab_module
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_int, c_null_ptr, c_double
   implicit none
 
   logical, save :: debug = .false.
   type(c_ptr), save :: default_zmq_context = c_null_ptr
 
   interface
-     type(c_ptr) function dzmq_connect() bind(c, name='dzmq_connect')
-       use iso_c_binding
+     type(c_ptr) function dzmq_connect() bind(c)
+       import :: c_ptr
      end function dzmq_connect
-  end interface
 
-  interface
-     subroutine dzmq_send(ptr, q, nx) bind(c, name='dzmq_send')
-       use iso_c_binding
+     subroutine dzmq_send(ptr, q, nx) bind(c)
+       import :: c_ptr, c_int, c_double
        type(c_ptr), intent(in), value :: ptr
        integer(c_int), intent(in), value :: nx
        real(c_double), intent(in) :: q(nx)
      end subroutine dzmq_send
-  end interface
 
-  interface
-     subroutine dzmq_send_size(ptr, nx, ny) bind(c, name='dzmq_send_size')
-       use iso_c_binding
+     subroutine dzmq_send_size(ptr, nx, ny) bind(c)
+       import :: c_ptr, c_int
        type(c_ptr), intent(in), value :: ptr
        integer(c_int), intent(in), value :: nx, ny
      end subroutine dzmq_send_size
-  end interface
 
-  interface
-     subroutine dzmq_close(ptr) bind(c, name='dzmq_close')
-       use iso_c_binding
+     subroutine dzmq_close(ptr) bind(c)
+       import :: c_ptr
        type(c_ptr), intent(in), value :: ptr
      end subroutine dzmq_close
+
   end interface
 
 contains
